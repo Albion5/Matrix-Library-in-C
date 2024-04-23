@@ -1,0 +1,43 @@
+#suite s21_eq_matrix
+
+#test test_eq_matrix_1
+matrix_t A, B;
+char *test_data = "square/5x5_4.dat";
+create_test_matrix(test_data, 5, 5, &A);
+create_test_matrix(test_data, 5, 5, &B);
+int status = s21_eq_matrix(&A, &B);
+ck_assert_int_eq(status, SUCCESS);
+s21_remove_matrix(&A);
+s21_remove_matrix(&B);
+
+#test test_eq_matrix_2
+matrix_t A, B;
+char *test_data = "rect/3x2_1.dat";
+create_test_matrix(test_data, 3, 2, &A);
+create_test_matrix(test_data, 3, 2, &B);
+int status = s21_eq_matrix(&A, &B);
+ck_assert_int_eq(status, SUCCESS);
+s21_remove_matrix(&A);
+s21_remove_matrix(&B);
+
+#test test_eq_matrix_3
+matrix_t A, B;
+char *test_data_1 = "rect/3x2_1.dat";
+char *test_data_2 = "rect/3x2_2.dat";
+create_test_matrix(test_data_1, 3, 2, &A);
+create_test_matrix(test_data_2, 3, 2, &B);
+int status = s21_eq_matrix(&A, &B);
+ck_assert_int_eq(status, FAILURE);
+s21_remove_matrix(&A);
+s21_remove_matrix(&B);
+
+#test test_eq_matrix_4
+matrix_t A, B;
+char *test_data_1 = "rect/1x5_1.dat";
+char *test_data_2 = "rect/3x2_1.dat";
+create_test_matrix(test_data_1, 1, 5, &A);
+create_test_matrix(test_data_2, 3, 2, &B);
+int status = s21_eq_matrix(&A, &B);
+ck_assert_int_eq(status, FAILURE);
+s21_remove_matrix(&A);
+s21_remove_matrix(&B);

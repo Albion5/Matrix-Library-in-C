@@ -1,0 +1,62 @@
+
+#suite s21_inverse
+
+#test test_inverse_1
+matrix_t A, C, D;
+char *test_data = "square/5x5_2.dat";
+char *result_data = "result/test_inverse_1.dat";
+create_test_matrix(test_data, 5, 5, &A);
+create_test_matrix(result_data, 5, 5, &D);
+int status = s21_inverse_matrix(&A, &C);
+for (int row = 0; row < D.rows; row++) {
+  for (int column = 0; column < D.columns; column++) {
+    ck_assert_double_eq_tol(C.matrix[row][column], D.matrix[row][column], 1e-7);
+  }
+}
+ck_assert_int_eq(C.columns, D.columns);
+ck_assert_int_eq(C.rows, D.rows);
+ck_assert_int_eq(status, OK);
+s21_remove_matrix(&A);
+s21_remove_matrix(&C);
+s21_remove_matrix(&D);
+
+#test test_inverse_2
+matrix_t A, C, D;
+char *test_data = "square/3x3_3.dat";
+char *result_data = "result/test_inverse_2.dat";
+create_test_matrix(test_data, 3, 3, &A);
+create_test_matrix(result_data, 3, 3, &D);
+int status = s21_inverse_matrix(&A, &C);
+for (int row = 0; row < D.rows; row++) {
+  for (int column = 0; column < D.columns; column++) {
+    ck_assert_double_eq_tol(C.matrix[row][column], D.matrix[row][column], 1e-7);
+  }
+}
+ck_assert_int_eq(C.columns, D.columns);
+ck_assert_int_eq(C.rows, D.rows);
+ck_assert_int_eq(status, OK);
+s21_remove_matrix(&A);
+s21_remove_matrix(&C);
+s21_remove_matrix(&D);
+
+#test test_inverse_3
+matrix_t A, C;
+char *test_data = "square/3x3_det_0.dat";
+create_test_matrix(test_data, 3, 3, &A);
+int status = s21_inverse_matrix(&A, &C);
+ck_assert_int_eq(status, CALC_ERROR);
+s21_remove_matrix(&A);
+
+#test test_inverse_4
+matrix_t A, C;
+char *test_data = "rect/3x2_2.dat";
+create_test_matrix(test_data, 3, 2, &A);
+int status = s21_inverse_matrix(&A, &C);
+ck_assert_int_eq(status, CALC_ERROR);
+s21_remove_matrix(&A);
+
+#test test_inverse_5
+matrix_t C;
+matrix_t *A = NULL;
+int status = s21_inverse_matrix(A, &C);
+ck_assert_int_eq(status, INCORRECT_M);

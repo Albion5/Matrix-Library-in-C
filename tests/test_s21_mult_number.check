@@ -1,0 +1,83 @@
+
+#suite s21_mult_number
+
+#test test_mult_number_1
+matrix_t A, C, D;
+char *test_data = "square/5x5_2.dat";
+create_test_matrix(test_data, 5, 5, &A);
+create_test_matrix(test_data, 5, 5, &D);
+int status = s21_mult_number(&A, 1, &C);
+for (int row = 0; row < D.rows; row++) {
+  for (int column = 0; column < D.columns; column++) {
+    ck_assert_double_eq_tol(C.matrix[row][column], D.matrix[row][column], 1e-7);
+  }
+}
+ck_assert_int_eq(C.columns, D.columns);
+ck_assert_int_eq(C.rows, D.rows);
+ck_assert_int_eq(status, OK);
+s21_remove_matrix(&A);
+s21_remove_matrix(&C);
+s21_remove_matrix(&D);
+
+#test test_mult_number_2
+matrix_t A, C, D;
+char *test_data = "square/5x5_1.dat";
+char *result_data = "square/5x5_zero.dat";
+create_test_matrix(test_data, 5, 5, &A);
+create_test_matrix(result_data, 5, 5, &D);
+int status = s21_mult_number(&A, 0, &C);
+for (int row = 0; row < D.rows; row++) {
+  for (int column = 0; column < D.columns; column++) {
+    ck_assert_double_eq_tol(C.matrix[row][column], D.matrix[row][column], 1e-7);
+  }
+}
+ck_assert_int_eq(C.columns, D.columns);
+ck_assert_int_eq(C.rows, D.rows);
+ck_assert_int_eq(status, OK);
+s21_remove_matrix(&A);
+s21_remove_matrix(&C);
+s21_remove_matrix(&D);
+
+#test test_mult_number_3
+matrix_t A, C, D;
+char *test_data = "square/5x5_3.dat";
+char *result_data = "square/5x5_-3.dat";
+create_test_matrix(test_data, 5, 5, &A);
+create_test_matrix(result_data, 5, 5, &D);
+int status = s21_mult_number(&A, -1, &C);
+for (int row = 0; row < D.rows; row++) {
+  for (int column = 0; column < D.columns; column++) {
+    ck_assert_double_eq_tol(C.matrix[row][column], D.matrix[row][column], 1e-7);
+  }
+}
+ck_assert_int_eq(C.columns, D.columns);
+ck_assert_int_eq(C.rows, D.rows);
+ck_assert_int_eq(status, OK);
+s21_remove_matrix(&A);
+s21_remove_matrix(&C);
+s21_remove_matrix(&D);
+
+#test test_mult_number_4
+matrix_t A, C, D;
+char *test_data = "rect/1x5_1.dat";
+char *result_data = "result/test_mult_number_1.dat";
+create_test_matrix(test_data, 1, 5, &A);
+create_test_matrix(result_data, 1, 5, &D);
+int status = s21_mult_number(&A, 10, &C);
+for (int row = 0; row < D.rows; row++) {
+  for (int column = 0; column < D.columns; column++) {
+    ck_assert_double_eq_tol(C.matrix[row][column], D.matrix[row][column], 1e-7);
+  }
+}
+ck_assert_int_eq(C.columns, D.columns);
+ck_assert_int_eq(C.rows, D.rows);
+ck_assert_int_eq(status, OK);
+s21_remove_matrix(&A);
+s21_remove_matrix(&C);
+s21_remove_matrix(&D);
+
+#test test_mult_number_5
+matrix_t C;
+matrix_t *A = NULL;
+int status = s21_mult_number(A, 32.5, &C);
+ck_assert_int_eq(status, INCORRECT_M);

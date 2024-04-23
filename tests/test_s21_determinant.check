@@ -1,0 +1,38 @@
+#suite s21_determinant
+
+#test test_determinant_1
+matrix_t A;
+double exp_result = 478898923.35815844927;
+double fact_result = 0;
+char *test_data = "square/3x3_3.dat";
+create_test_matrix(test_data, 3, 3, &A);
+int status = s21_determinant(&A, &fact_result);
+ck_assert_double_eq_tol(fact_result, exp_result, 1e-7);
+ck_assert_int_eq(status, OK);
+s21_remove_matrix(&A);
+
+#test test_determinant_2
+matrix_t A;
+double exp_result = 7485357851.9474929894;
+double fact_result = 0;
+char *test_data = "square/5x5_2.dat";
+create_test_matrix(test_data, 5, 5, &A);
+int status = s21_determinant(&A, &fact_result);
+ck_assert_double_eq_tol(fact_result, exp_result, 1e-5);
+ck_assert_int_eq(status, OK);
+s21_remove_matrix(&A);
+
+#test test_determinant_3
+matrix_t A;
+double fact_result = 0;
+char *test_data = "rect/1x5_1.dat";
+create_test_matrix(test_data, 1, 5, &A);
+int status = s21_determinant(&A, &fact_result);
+ck_assert_int_eq(status, CALC_ERROR);
+s21_remove_matrix(&A);
+
+#test test_determinant_4
+matrix_t *A = NULL;
+double fact_result = 0;
+int status = s21_determinant(A, &fact_result);
+ck_assert_int_eq(status, INCORRECT_M);
